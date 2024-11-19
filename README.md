@@ -13,7 +13,7 @@ As this setup builds the server container manually, any system running Docker sh
 ## Installation
 
 ```
-git clone https://github.com/theforcer/dwc-docker/
+git clone [https://github.com/theforcer/dwc-docker/](https://github.com/Luporion/dwc-docker-Luporion.git)
 cd dwc-docker
 ```
 

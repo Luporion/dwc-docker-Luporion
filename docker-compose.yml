@@ -5,8 +5,6 @@ services:
     image: haproxy:lts-alpine
     container_name: dwc_haproxy
     restart: unless-stopped
-    ports:
-      - 80:80
     volumes:
      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     sysctls:
@@ -19,17 +17,6 @@ services:
     build: .
     container_name: dwc_server
     restart: unless-stopped
-    ports:
-      - 8000:8000
-      - 9000:9000
-      - 9001:9001
-      - 27500:27500
-      - 28910:28910
-      - 29900:29900
-      - 29901:29901
-      - 29920:29920
-      - 27900:27900/udp
-      - 27901:27901/udp
     volumes:
       - data:/dwc/data
     networks:
@@ -47,4 +34,4 @@ networks:
     ipam:
       config:
         - subnet: 192.168.178.0/24  # Replace with your subnet
-          gateway: 192.168.178.1    # Replace with your
+          gateway: 192.168.178.1    # Replace with your gateway

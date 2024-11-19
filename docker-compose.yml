@@ -5,30 +5,24 @@ services:
     image: haproxy:lts-alpine
     container_name: dwc_haproxy
     restart: unless-stopped
-    networks:
-      dwc-mcvlan:
-        ipv4_address: 192.168.178.20
     ports:
       - 80:80
     volumes:
      - ./haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg:ro
     sysctls:
      - net.ipv4.ip_unprivileged_port_start=0
+    networks:
+      mcvlan_net:
+        ipv4_address: 192.168.178.10  # Replace with desired IP address
 
   dwc:
     build: .
     container_name: dwc_server
     restart: unless-stopped
-    networks:
-      dwc-mcvlan:
-        ipv4_address: 192.168.178.21
     ports:
       - 8000:8000
       - 9000:9000
       - 9001:9001
-      - 9003:9003
-      - 9009:9009
-      - 9998:9998
       - 27500:27500
       - 28910:28910
       - 29900:29900
@@ -38,14 +32,19 @@ services:
       - 27901:27901/udp
     volumes:
       - data:/dwc/data
-
-networks:
-  dwc-mcvlan:
-    ipam:
-      driver: default
-      config:
-        - subnet: 192.168.178.0/24
-
+    networks:
+      mcvlan_net:
+        ipv4_address: 192.168.178.11  # Replace with desired IP address
 
 volumes:
   data:
+
+networks:
+  mcvlan_net:
+    driver: macvlan
+    driver_opts:
+      parent: eth0  # Replace with your network interface
+    ipam:
+      config:
+        - subnet: 192.168.178.0/24  # Replace with your subnet
+          gateway: 192.168.178.1    # Replace with your
